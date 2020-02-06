@@ -1,0 +1,238 @@
+<%- include ('partials/start') %>
+    <div class="container z-depth-1">
+        <div class="row">
+            <div class="col s12">
+                <h5>Your watchlist</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <table class="responsive-table highlight">
+                    <thead>
+                        <tr>
+                            <th>Trade</th>
+                            <th>Actions</th>
+                            <th>Symbol</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Price ch%</th>
+                            <th>Volume</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stocks-table-body"></tbody>
+                </table> 
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed-action-btn click-to-toggle">
+        <a class="btn-floating btn-large light-blue darken">
+          <i class="large material-icons">add</i>
+        </a>
+        <ul>
+          <li><a href="#add-symbol-modal" class="btn-floating red modal-trigger"><i class="material-icons">exposure_plus_1</i></a></li>
+          <li><a href="#import-from-spreadsheet-modal" class="btn-floating green modal-trigger"><i class="material-icons">attach_file</i></a></li>
+        </ul>
+    </div>
+
+    <!-- Modal Structure -->
+  <div id="add-symbol-modal" class="modal">
+    <div class="modal-content">
+      <h4>Add symbol</h4>
+      <div class="row">
+          <div class="col s12 input-field">
+              <input type="text" name="symbol" id="symbol">
+              <label for="symbol">Symbol</label>
+          </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+      <a id="add-symbol-btn" class="modal-close waves-effect waves-green btn-flat">Submit</a>
+    </div>
+  </div>
+
+  <div id="import-from-spreadsheet-modal" class="modal">
+    <div class="modal-content">
+      <h4>Import from spreadsheet</h4>
+      <div class="row">
+          <div class="col s12 input-field">
+            <form action="#">
+                <div class="file-field input-field">
+                  <div class="btn">
+                    <span>File</span>
+                    <input type="file" name="file" id="file">
+                  </div>
+                  <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text">
+                  </div>
+                </div>
+            </form>
+          </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+      <a class="modal-close waves-effect waves-green btn-flat">Submit</a>
+    </div>
+  </div>
+
+  <div id="buy-modal" class="modal">
+    <div class="modal-content">
+      <h4 class="green white-text" style="padding: 10px; border-radius: 5px;">Buy <span id="buy-symbol">stock</span></h4>
+      <div class="row">
+        <div class="col s12 input-field">
+          <select name="buy-order" id="buy-order">
+            <option value="market">Market</option>
+            <option value="stop">Stop</option>
+            <option value="limit">Limit</option>
+            <option value="stoplimit">StopLimit</option>
+            <option value="trailstop">TrailStop</option>
+            <option value="trailstoplimit">TrailStopLimit</option>
+            <option value="moc">MOC</option>
+            <option value="loc">LOC</option>
+          </select>
+          <label for="buy-order">Order type</label>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col s12 l6 input-field">
+            <input type="number" name="buy-entry" id="buy-entry" step="0.01" disabled>
+            <label for="buy-entry">Entry price</label>
+          </div>
+          <div class="col s12 l6 input-field">
+            <input type="number" name="buy-amount" id="buy-amount" step="0.01">
+            <label for="buy-amount">Amount</label>
+          </div>
+      </div>
+      <div class="row">
+        <div class="col s12 input-field">
+          <select name="buy-tradeTime" id="buy-tradeTime">
+            <option value="day">Day</option>
+            <option value="gtc">GTC</option>
+            <option value="ext">EXT</option>
+            <option value="gtcext">GTC_EXT</option>
+          </select>
+          <label for="buy-tradeTime">Trade Period</label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+      <a id="buy-symbol-btn" class="waves-effect waves-green btn green">Submit</a>
+    </div>
+  </div>
+
+  <div id="sell-modal" class="modal">
+    <div class="modal-content">
+      <h4 class="red white-text" style="padding: 10px; border-radius: 5px;">Sell <span id="sell-symbol"></span></h4>
+      
+      <div class="row">
+        <div class="col s12 input-field">
+          <select name="sell-order" id="sell-order">
+            <option value="market">Market</option>
+            <option value="stop">Stop</option>
+            <option value="limit">Limit</option>
+            <option value="stoplimit">StopLimit</option>
+            <option value="trailstop">TrailStop</option>
+            <option value="trailstoplimit">TrailStopLimit</option>
+            <option value="moc">MOC</option>
+            <option value="loc">LOC</option>
+          </select>
+          <label for="order">Order type</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 l6 input-field">
+          <input type="number" name="sell-entry" id="sell-entry" step="0.01" disabled>
+          <label for="sell-entry">Exit price</label>
+        </div>
+        <div class="col s12 l6 input-field">
+          <input type="number" name="sell-amount" id="sell-amount" step="0.01">
+          <label for="sell-amount">Amount</label>
+        </div>
+    </div>
+      <div class="row">
+        <div class="col s12 input-field">
+          <select name="sell-tradeTime" id="sell-tradeTime">
+            <option value="day">Day</option>
+            <option value="gtc">GTC</option>
+            <option value="ext">EXT</option>
+            <option value="gtcext">GTC_EXT</option>
+          </select>
+          <label for="sell-tradeTime">Trade Period</label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+      <a id="sell-symbol-btn" class="waves-effect waves-red btn red">Submit</a>
+    </div>
+  </div>
+
+  <div id="view-orders" class="modal">
+    <div class="modal-content">
+      <h4 id="orders-title">Orders</h4>
+      <div class="row">
+          <div class="col s12">
+            <table class="responsive-table">
+              <thead>
+                <tr>
+                  <th>Actions</th>
+                  <th>Side</th>
+                  <th>Entry/Exit</th>
+                  <th>Quantity</th>
+                  <th>Order</th>
+                  <th>TIF</th>
+                  <th>Status</th>
+                  <th>Timestamp</th>
+                </tr>
+              </thead>
+              <tbody id="view-orders-modal-table"></tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+  </div>
+
+  <div id="delete-stock" class="modal">
+    <div class="modal-content">
+      <h4>Delete stock</h4>
+      <div class="row">
+          
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+      <a class="modal-close waves-effect waves-green btn-flat">Submit</a>
+    </div>
+  </div>
+
+  <div id="cancel-order" class="modal">
+    <div class="modal-content">
+      <h4>Confirm order cancellation</h4>
+      <table class="responsive-table">
+        <thead>
+          <tr>
+            <th>Side</th>
+            <th>Entry/Exit</th>
+            <th>Quantity</th>
+            <th>Order</th>
+            <th>TIF</th>
+            <th>Status</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+        <tbody id="cancel-order-table-body"></tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+      <a class="waves-effect waves-green btn red" onclick="cancelOrder()">Confirm</a>
+    </div>
+  </div>
+<%- include ('partials/end') %>
+

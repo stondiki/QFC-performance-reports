@@ -4,7 +4,6 @@ if(process.env.NODE_ENV !== 'production') {
 
 const express = require('express');
 const session = require('express-session');
-const router = express.Router();
 const path = require('path');
 const cookieParser = require('cookie-parser');
 
@@ -18,14 +17,14 @@ app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(session({
-  secret: process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET || secret,
   resave: false,
   saveUninitialized: false
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const port = process.env.PORT;
+const port = process.env.PORT || 9000;
 
 routes(app);
 

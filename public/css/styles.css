@@ -1,0 +1,37 @@
+nav {
+    background-image: linear-gradient(to right, #5f2c82, #49a09d);    
+}
+
+#mobile-demo {
+    background-image: linear-gradient(to bottom, #5f2c82, #49a09d);
+}
+
+#mobile-demo a {
+    color: white;
+}
+
+h4 {
+    padding: 10px;
+    background-image: linear-gradient(to left, #43cea2, #185a9d);
+    color: white;
+}
+
+.buy {
+    border-bottom: 2px solid #4caf50;
+}
+
+.sell {
+    border-bottom: 2px solid #f44336;
+}
+
+.working {
+    border-bottom: 2px solid #ffeb3b;
+}
+
+.filled {
+    border-bottom: 2px solid #2196f3;
+}
+
+.cancelled {
+    border-bottom: 2px solid #ff9800;
+}

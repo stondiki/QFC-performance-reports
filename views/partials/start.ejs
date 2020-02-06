@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <% if (locals.session.logged_in == true) { %>
@@ -15,3 +16,6 @@
     <% } else { %>
         <%- include ('logged-out-nav') %>
     <% } %>
+    <div class="container">
+        <h4 class="left-align"><%= title %></h4>
+    </div>

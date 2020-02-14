@@ -130,7 +130,7 @@ document.querySelectorAll('.logout-btn').forEach(element => {
                 M.toast({html: 'You are being redirected to the home page.'});
                 setTimeout(() => {
                     window.location.replace('/');
-                }, 1000);
+                }, 500);
             } else {
                 M.toast({html: 'An error occured while logging you out.', classes: 'orange darken-1'});
             }
@@ -266,7 +266,6 @@ if(window.location.pathname == "/stocks"){
     }
 
     function cancelOrder(){
-        console.log(cData);
         let options = {
             method: "DELETE",
             headers: {
@@ -278,7 +277,13 @@ if(window.location.pathname == "/stocks"){
         fetch(url, options)
         .then(resp => resp.json())
         .then(data => {
-
+            if(data.status == 'success'){
+                M.toast({html: data.message, classes: 'green darken-1'});
+                M.Modal.getInstance(document.querySelector('#cancel-order')).close();
+            } else {
+                M.toast({html: data.message, classes: 'red darken-1'});
+                M.Modal.getInstance(document.querySelector('#cancel-order')).close();
+            }
         });
     }
 
@@ -368,8 +373,8 @@ if(window.location.pathname == "/stocks"){
         let data = {
             market: 'sell',
             symbol: document.querySelector('#sell-symbol').innerHTML,
-            entry: document.querySelector('#sell-entry').value,
-            amount: document.querySelector('#sell-amount').value,
+            entry: document.querySelector('#sell-entry').value * 1,
+            amount: document.querySelector('#sell-amount').value * (-1),
             order: document.querySelector('#sell-order').value,
             tradeType: document.querySelector('#sell-tradeTime').value
         };

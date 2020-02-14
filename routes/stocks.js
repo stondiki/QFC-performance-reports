@@ -271,7 +271,8 @@ exports.cancelOrder = (req, res) => {
                                             stock: req.body.symbol,
                                             originalOrder: order,
                                             index: index,
-                                            action: 'cancel'
+                                            action: 'cancel',
+                                            timestamp: Date.now()
                                         });
                                     }
                                 });
@@ -281,17 +282,17 @@ exports.cancelOrder = (req, res) => {
                     console.log(sres.length, sres);
                     if(sres.length == 1){
                         if(result.cancellationOrders){
-                            result.cancellationOrders.push(sres);
+                            result.cancellationOrders.push(sres[0]);
                             dbo.collection("members").updateOne({email: req.session.email}, {$set: {cancellationOrders: result.cancellationOrders}}, (err, result) => {
                                 if(err) throw err;
                                 res.send({
-                                    status: 'information',
+                                    status: 'success',
                                     message: 'Order cancellation submitted successfully'
                                 });
                                 db.close();
                             });
                         } else {
-                            dbo.collection("members").updateOne({email: req.session.email}, {$set: {cancellationOrders: [sres]}}, (err, result) => {
+                            dbo.collection("members").updateOne({email: req.session.email}, {$set: {cancellationOrders: sres}}, (err, result) => {
                                 if(err) throw err;
                                 res.send({
                                     status: 'information',

@@ -24,17 +24,6 @@ exports.cancelOrder = (user, stock, index) => {
     });
 };
 
-exports.updateStock = (user, stocks) => {
-    MongoClient.connect(url, (err, db) => {
-        if(err) throw err;
-        let dbo = db.db("QFC");
-        dbo.collection("members").updateOne({email: user}, {$set: {stocks: stocks}}, (err, result) => {
-            if (err) throw err;
-        });
-        db.close();
-    });
-};
-
 exports.fillOrder = (user, stock, index, fillPrice, fillTime) => {
     MongoClient.connect(url, (err, db) => {
         if (err) throw err;
@@ -48,11 +37,10 @@ exports.fillOrder = (user, stock, index, fillPrice, fillTime) => {
                         symbol.orders[index].fillPrice = fillPrice;
                         symbol.orders[index].fillTime = fillTime;
                         symbol.orders[index].status = 'filled';
-                        this.updateStock(user, result.stocks);
-                        /*dbo.collection("members").updateOne({email: user}, {$set: {stocks: result.stocks}}, (err, result) => {
+                        dbo.collection("members").updateOne({email: user}, {$set: {stocks: result.stocks}}, (err, result) => {
                             if (err) throw err;
                             db.close();
-                        });*/
+                        });
                     }
                 }
             });

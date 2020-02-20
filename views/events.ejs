@@ -1,0 +1,53 @@
+<%- include ('partials/start') %>
+<div class="container">
+    <h5>Upcoming events</h5>
+    <div class="col s12">
+        <!--<ul id="events-dis"></ul>-->
+        <div id="events-dis" class="row"></div>
+    </div>
+</div>
+
+<% if (locals.session.userType == 'admin') { %>
+    <div class="fixed-action-btn">
+        <a href="#add-event-modal" class="modal-trigger btn-floating btn-large red">
+            <i class="large material-icons">mode_edit</i>
+        </a>
+    </div>
+    <div id="add-event-modal" class="modal">
+        <div class="modal-content">
+          <h4>Add event</h4>
+          <div class="row">
+            <div class="col s12 input-field">
+                <input type="text" name="title" id="title">
+                <label for="title">Title</label>
+            </div>
+            <div class="col s12 input-field">
+                <input type="text" name="description" id="description">
+                <label for="description">Description</label>
+            </div>
+            <div class="col s12 input-field">
+                <input type="date" name="date" id="date">
+                <label for="date">Date</label>
+            </div>
+            <div class="col s12 input-field">
+                <input type="time" name="time" id="time">
+                <label for="time">Time</label>
+            </div>
+            <div class="col s12 input-field">
+                <input type="text" name="venue" id="venue">
+                <label for="venue">Venue</label>
+            </div>
+            <div class="col s12 input-field">
+                <input type="number" name="entry" id="entry">
+                <label for="entry">Entry</label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+          <a id="add-event-btn" class="modal-close waves-effect waves-green btn-flat">Submit</a>
+        </div>
+    </div>
+<% } %>
+<%- include ('partials/end') %>
+

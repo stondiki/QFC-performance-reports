@@ -30,6 +30,7 @@ exports.login = (req, res) => {
                         req.session.logged_in = true;
                         req.session.email = result[0].email;
                         req.session.name = result[0].name[0] + ' ' + result[0].name[1];
+                        req.session.userType = result[0].userType;
                         res.send({
                             status: 'success',
                             message: 'You have been logged in'
@@ -61,6 +62,7 @@ exports.logout = (req, res) => {
     req.session.logged_in = false;
     req.session.email = null;
     req.session.name = null;
+    req.session.userType = null;
     res.send({
         status: 'success',
         message: 'You have been logged out'

@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
+// Functions for resgister page
 if(window.location.pathname == '/register'){
     document.querySelector('#register-btn').addEventListener('click', () => {
         let form_values = {
@@ -80,6 +81,7 @@ if(window.location.pathname == '/register'){
     });
 }
 
+// Functions for login page
 if(window.location.pathname == '/login'){
     document.querySelector('#login-btn').addEventListener('click', () => {
         let form_values = {
@@ -120,6 +122,7 @@ if(window.location.pathname == '/login'){
     });
 }
 
+// logout function
 document.querySelectorAll('.logout-btn').forEach(element => {
     element.addEventListener('click', () => {
         fetch('/logout')
@@ -138,6 +141,7 @@ document.querySelectorAll('.logout-btn').forEach(element => {
     });
 });
 
+// Function for stocks page
 if(window.location.pathname == "/stocks"){
         fetch('/stocks/get')
         .then(resp => resp.json())
@@ -428,6 +432,126 @@ if(window.location.pathname == "/stocks"){
                         M.toast({html: 'An error occurered while placing your order', classes: 'red darken-1'});
                     }
                 });
+            }
+        }
+    });
+}
+
+// Functions for events page
+if(window.location.pathname == '/events'){
+    fetch('events/get')
+    .then(resp => resp.json())
+    .then(data => {
+        console.log(data);
+        let eventsDis = document.querySelector('#events-dis');
+        eventsDis.innerHTML = "";
+        data.data.forEach(event => {
+            let dt = new Date(event.date+' '+event.time);
+            if(event.entry == 0){
+                event.entry = 'Free';
+            } else {
+                event.entry = 'Kshs. '+event.entry;
+            }
+            if(data.role == 'admin'){
+                eventsDis.innerHTML += `
+                <div class="col s12">
+                    <div class="card blue-grey darken-1">
+                        <div class="card-content white-text">
+                            <span class="card-title"><h5>`+event.title+`</h5></span>
+                            <br>
+                            Description:
+                            <h6>`+event.description+`</h6>
+                            <br>
+                            <h6>Venue: <span><b>`+event.venue+`</b></span></h6>
+                            <h6>Date: <b>`+dt.toDateString()+`</b></h6>
+                            <h6>Time: <b>`+event.time.slice(0,5)+`</b></h6>
+                            <h6>Entry: <span><b>`+event.entry+`</b></span></h6>
+                            </div>
+                            <div class="card-action">
+                            <a href="#">Register</a>
+                            <a href="#">Edit</a>
+                            <a href="#">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            } else {
+                eventsDis.innerHTML += `
+                <div class="col s12">
+                    <div class="card blue-grey darken-1">
+                        <div class="card-content white-text">
+                            <span class="card-title"><h5>`+event.title+`</h5></span>
+                            <br>
+                            Description:
+                            <h6>`+event.description+`</h6>
+                            <br>
+                            <h6>Venue: <span><b>`+event.venue+`</b></span></h6>
+                            <h6>Date: <b>`+dt.toDateString()+`</b></h6>
+                            <h6>Time: <b>`+event.time.slice(0,5)+`</b></h6>
+                            <h6>Entry: <span><b>`+event.entry+`</b></span></h6>
+                            </div>
+                            <div class="card-action">
+                            <a href="#">Register</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            }
+        });
+    });
+
+    document.querySelector('#add-event-btn').addEventListener('click', () => {
+        let formFields = {
+            title: document.querySelector('#title').value,
+            description: document.querySelector('#description').value,
+            date: document.querySelector('#date').value,
+            time: document.querySelector('#time').value,
+            venue: document.querySelector('#venue').value,
+            entry: document.querySelector('#entry').value
+        };
+        console.log(formFields);
+        if(formFields.title == ''){
+            document.querySelector('#title').focus();
+            M.toast({html: 'Title is requires', classes: 'red darken-1'});
+        } else {
+            if(formFields.description == ''){
+                document.querySelector('#description').focus();
+                M.toast({html: 'Description is requires', classes: 'red darken-1'});
+            } else {
+                if(formFields.date == '') {
+                    document.querySelector('#date').focus();
+                    M.toast({html: 'Date is requires', classes: 'red darken-1'});
+                } else {
+                    if(formFields.time == ''){
+                        document.querySelector('#time').focus();
+                        M.toast({html: 'Time is requires', classes: 'red darken-1'});
+                    } else {
+                        if(formFields.venue == ''){
+                            document.querySelector('#venue').focus();
+                            M.toast({html: 'Title is requires', classes: 'red darken-1'});
+                        } else {
+                            if(formFields.entry == ''){
+                                document.querySelector('#entry').focus();
+                                M.toast({html: 'Entry is requires', classes: 'red darken-1'});
+                            } else {
+                                let url = '/events/add';
+                                let options = {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify(formFields)
+                                };
+
+                                fetch(url, options)
+                                .then(resp => resp.json())
+                                .then(data => {
+                                    console.log(data);
+                                });
+                            }
+                        }
+                    }
+                }
             }
         }
     });

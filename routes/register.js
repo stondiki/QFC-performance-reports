@@ -39,7 +39,8 @@ exports.register = (req, res) => {
                         name: names,
                         phone: req.body.phone,
                         email: req.body.email,
-                        password: bcrypt.hashSync(req.body.password, salt)
+                        password: bcrypt.hashSync(req.body.password, salt),
+                        userType: 'public'
                     };
                     dbo.collection("members").insertOne(member_details, (err, result) => {
                         if (err) {

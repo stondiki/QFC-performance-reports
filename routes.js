@@ -19,4 +19,12 @@ module.exports = (app) => {
     app.route('/stocks/orders').post(stocks.getOrders);
     app.route('/stocks/orders/add').post(stocks.addOrder);
     app.route('/stocks/orders/delete').delete(stocks.cancelOrder);
+
+    const events = require('./routes/events');
+    app.route('/events').get(events.index);
+    app.route('/events/get').get(events.getEvents);
+    app.route('/events/add').post(events.addEvent);
+    app.route('/events/edit').put(events.editEvent);
+    app.route('/events/delete').delete(events.deleteEvent);
+    app.route('/events/register').post(events.registerForEvent);
 };
